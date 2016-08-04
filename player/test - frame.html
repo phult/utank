@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <script type="text/javascript" src="script/jquery-1.8.3.js"></script>   
+        <script type="text/javascript" src="script/socket.io.js"></script>
+        <script type="text/javascript" src="script/uTank.io.js"></script>      
+        <!--        <script type="text/javascript" src="script/uTank.tank.js"></script>
+                <script type="text/javascript" src="script/uTank.cannon.js"></script>
+                <script type="text/javascript" src="script/uTank.missile.js"></script>-->
+        <!--<script type="text/javascript" src="script/uTank.game.js"></script>-->
+        <script>
+            var timeout;
+            var rqNumber=0;
+            var rpNumber=0;
+            var socket;            
+            $(document).ready(function() {                 
+//                window.top.onConnect();
+                socket=io.connect('http://localhost:1337');
+                socket.on('uTank_msg_load', function (msg) {
+//                    parent.onConnect();
+                    $('#concurrentLog').html('Connection success');
+                    $('body').css('background-color','yellow');
+                    timeout= setTimeout(function(){
+                        sendRequest();        
+                    },1); 
+                    //                    alert(msg);
+                });
+                socket.on('msg_test', function (msg) {
+                    rpNumber++;
+                    $('#responseLog').html('responseLog'+rpNumber);
+					$('#failLog').html('Connection fail:' +(rqNumber-rpNumber));
+//                    parent.onMessage();
+                });
+            });
+            function sendRequest(){
+                var object={idx:rqNumber};                
+                socket.emit('msg_test',object);
+                rqNumber++;
+                $('#requestLog').html('requestLog'+rqNumber);
+				if(rqNumber<=9999){
+					timeout= setTimeout(function(){
+						sendRequest();        
+					},1); 
+				}else{
+                                    $('body').css('background-color','green');
+                                }
+            }
+            
+            
+            var connections=new Array();
+            var connectedConcurrents=0;
+//            function Connection(socket){
+//                this.socket=socket;
+//                this.connectionSuccess=function(){
+//                    connectedConcurrents++;
+//                    $('#concurrentNumber').html('Connection numbers: '+connectedConcurrents);
+//                }
+//            }
+            //            function test(){
+            //
+            //                this.socket=io.connect('http://localhost:1337');
+            //                this.socket.on('uTank_msg_load', function (msg) {
+            //                    $('#concurrentLog').html('Connection success');
+            //                    $('body').css('background-color','blue');
+            //                    //                    alert(msg);
+            //                });
+            //
+            //            }
+        </script>
+        <style type="text/css">
+            body{
+                background-color: red;
+            }
+            .textbox{
+                padding: 5px;
+                margin: 10px 10px 0px 10px;
+                font-size: 18px;
+            }
+            .selectbox{
+                padding: 5px;
+                margin: 10px 10px 0px 10px;
+                font-size: 18px;
+            }
+            .button{
+                color: #FFF;
+                height: 30px;
+                margin: 10px 0 10px 10px;
+                background-color: red;
+                background-repeat: no-repeat;
+                background-position: 97% center;
+                font-size: 16px;
+                text-transform: uppercase;
+                /*padding: 9px 10px 9px 10px;*/
+                text-decoration: none;
+                cursor: pointer;
+                border-radius: 4px;
+                box-shadow: 0px 1px 2px rgba(0, 0, 0, .35);
+                width: 200px;
+                height: 50px;
+            }
+            #game-menu{
+                background-image: url('image/htnk2.jpg');
+                width: 1350px;
+                height: 800px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="join-game">           
+            <a id="concurrentLog">Connection numbers: 0</a>
+			<br>
+            <a id="requestLog">Connection numbers: 0</a>
+			<br>
+            <a id="responseLog">Connection numbers: 0</a>
+			<br>
+			<a id="failLog">Connection fail numbers: 0</a>
+			<br>
+        </div>
+
+    </body>
+</html>

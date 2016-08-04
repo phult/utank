@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <script type="text/javascript" src="script/jquery-1.8.3.js"></script>   
+        <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+        <script type="text/javascript" src="script/socket.io.js"></script>
+        <script type="text/javascript" src="script/uTank.io.js"></script>      
+        <!--        <script type="text/javascript" src="script/uTank.tank.js"></script>
+                <script type="text/javascript" src="script/uTank.cannon.js"></script>
+                <script type="text/javascript" src="script/uTank.missile.js"></script>-->
+        <script type="text/javascript" src="script/uTank.game.js"></script>
+        <script>
+            document.oncontextmenu = function(){return false}
+        </script>
+        <style type="text/css">
+            .textbox{
+                padding: 5px;
+                margin: 10px 10px 0px 10px;
+                font-size: 18px;
+            }
+            .selectbox{
+                padding: 5px;
+                margin: 10px 10px 0px 10px;
+                font-size: 18px;
+            }
+            .button{
+                color: #FFF;
+                height: 30px;
+                margin: 10px 0 10px 10px;
+                background-color: red;
+                background-repeat: no-repeat;
+                background-position: 97% center;
+                font-size: 16px;
+                text-transform: uppercase;
+                /*padding: 9px 10px 9px 10px;*/
+                text-decoration: none;
+                cursor: pointer;
+                border-radius: 4px;
+                box-shadow: 0px 1px 2px rgba(0, 0, 0, .35);
+                width: 200px;
+                height: 50px;
+            }
+            #game-menu{
+                background-image: url('image/htnk2.jpg');
+                width: 1350px;
+                height: 800px;
+            }
+        </style>
+    </head>
+    <body>
+        <!--        <div id="join-game">
+                    <input id="user" type="text" value=""></input>
+                    <input id="type" type="text" value=""></input>
+                    <input id="team" type="text" value=""></input>
+                    <input type="button" value="Join" onclick="UGame.prototype.getInstance().joinGame()"></input>
+                </div>-->
+        <div id="game-menu">
+            <div style="padding-left: 450px;
+                 padding-top: 200px;">
+                <input id="user" class="textbox" style="width: 400px;" type="text" value="" placeholder="PLAYER NAME"></input>
+                </br>
+                <select style="width: 413px" class="selectbox" name="type" id="type">
+                    <option value="0">
+                        MINI TANK                       
+                    </option>
+                    <option value="1">
+                        HUGE TANK              
+                    </option>                 
+                </select>
+                </br>
+                <!--<input id="team" class="textbox" style="width: 400px;" type="text" value="" placeholder="Team Name"></input>-->
+                <select style="width: 413px" class="selectbox" name="team" id="team">
+                    <option value="0">
+                        ATTACK TEAM
+                    </option>
+                    <option value="1">
+                        DEFENSE TEAM                
+                    </option>                 
+                </select>
+                </br>
+                <input type="button" class="button" value="Join now" onclick="UGame.prototype.getInstance().joinGame()"></input>
+                </br>                
+            </div>
+        </div>
+        <div id="game-play" style="display: none">
+            <canvas id="canvas" width="1000" height="600" tabindex="1" style="background-color: #333;vertical-align: top;border: 1px solid;cursor: crosshair" ></canvas>	
+            <textarea id="log" style="width: 200px;height: 600px;background-color: black;color: white;">loading...</textarea>
+            <div id="msg"></div>
+            <div id="msg2"></div>
+        </div>
+    </body>
+</html>
