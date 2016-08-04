@@ -1,5 +1,7 @@
+var debug = false;
 var io = require('socket.io');
-var socket = io.listen(1337,{log:true});
+var socket = io.listen(1337, {log: debug});
+console.log("> OK! Ready to go...");
 var clientNameTemp = 'client_temp';
 function Client(name, posX, posY, socket, heath) {
     this.name = name;
@@ -89,8 +91,8 @@ var blockhouse_type = [
     }
 ]
 var clients = new Array();
-socket.sockets.on('connection', function(socket) {
-console.log('Client connection');
+socket.sockets.on('connection', function (socket) {
+    console.log('Client connection');
 //    sockets.push(socket);
     var currentTanks = new Array();
     for (var i = 0; i < clients.length; i++) {
@@ -119,10 +121,10 @@ console.log('Client connection');
     socket.emit('uTank_msg_load', JSON.stringify(replyMsg));
     var newClient = new Client(clientNameTemp, 0, 0, socket, 1);
     clients.push(newClient);
-    socket.on('msg_test', function(msg) {
+    socket.on('msg_test', function (msg) {
         socket.emit('msg_test', msg);
     });
-    socket.on('uTank_msg_goto', function(msg) {
+    socket.on('uTank_msg_goto', function (msg) {
         var msgObj = JSON.parse(msg);
         //        console.log('Received GOTO from client ',msg);
         for (var i = 0; i < clients.length; i++) {
@@ -136,7 +138,7 @@ console.log('Client connection');
             }
         }
     });
-    socket.on('uTank_msg_fire', function(msg) {
+    socket.on('uTank_msg_fire', function (msg) {
         var msgObj = JSON.parse(msg);
         for (var i = 0; i < clients.length; i++) {
             if (clients[i].name != msgObj.user) {
@@ -144,7 +146,7 @@ console.log('Client connection');
             }
         }
     });
-    socket.on('uTank_msg_init', function(msg) {
+    socket.on('uTank_msg_init', function (msg) {
         console.log('uTank_msg_init');
         var msgObj = JSON.parse(msg);
         var clientMsg = new Object();
@@ -223,7 +225,7 @@ console.log('Client connection');
 //        clients.push(client);                   
 //        console.log('FINAL INIT');
     });
-    socket.on('uTank_msg_destroy', function(msg) {
+    socket.on('uTank_msg_destroy', function (msg) {
         var msgObj = JSON.parse(msg);
         for (var i = 0; i < clients.length; i++) {
             if (clients[i].name == msgObj.user) {
@@ -232,7 +234,7 @@ console.log('Client connection');
             }
         }
     });
-    socket.on('uTank_msg_busted', function(msg) {
+    socket.on('uTank_msg_busted', function (msg) {
 //        console.log('uTank_msg_busted->>>>');
         var msgObj = JSON.parse(msg);
         for (var i = 0; i < clients.length; i++) {
@@ -248,7 +250,7 @@ console.log('Client connection');
             }
         }
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
         var client;
         for (var i = 0; i < clients.length; i++) {
             if (clients[i].socket == socket) {
